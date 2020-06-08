@@ -10,5 +10,5 @@ Study of Lysine biosynthesis pathway under saline stress
 6. Data Discretization. (Status=Ongion, Exploring methods for 3 level discretization)
 7. Learn Network Parameter. (Status=Pending,Dirichlet- Multinomial Model)
 8. Inference simulations. (Status=Pending, to determine regulators of Lysine)
-9. Validation if any (Status=Pending, By Khushboo and Dr. Septi)
+9. Validation if any (Status=Pending, By Khushboo and  Prof. Septi)
 10. Soft Validation (Status=Pending, Differential Expression Analysis, by Rajan)
