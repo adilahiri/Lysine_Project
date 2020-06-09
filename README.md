@@ -11,4 +11,4 @@ Study of Lysine biosynthesis pathway under saline stress
 7. Learn Network Parameter. (Status=Pending - Aditya,Dirichlet- Multinomial Model)
 8. Inference simulations. (Status=Pending-Aditya, to determine regulators of Lysine)
 9. Validation if any (Status=Pending, By Khushboo and  Prof. Septi)
-10. Soft Validation (Status=Pending, Differential Expression Analysis, by Rajan)
+10. Soft Validation /Other Preliminary Analysis (Status=Pending, Differential Expression Analysis, by Rajan)
