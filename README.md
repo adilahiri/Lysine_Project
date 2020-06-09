@@ -1,5 +1,5 @@
 # Lysine_Project
-Study of Lysine biosynthesis pathway under saline stress
+Study of Lysine biosynthesis pathway under saline stress and normal conditions.
 
 # Process
 1. Establish the Biosynthesis pathway of Lysine in Rice. (Status= Completed by Aditya)
