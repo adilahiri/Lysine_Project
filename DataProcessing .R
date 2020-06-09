@@ -3,11 +3,11 @@ source('~/Desktop/Research/Septi/GSE98455_RAW/TextFile/binarized_data.R')
 source('~/Desktop/Research/Septi/GSE98455_RAW/TextFile/get_quartile.R')
 source('~/Desktop/Research/Septi/GSE98455_RAW/TextFile/get_discrete.R')
 source('~/Desktop/Research/Septi/GSE98455_RAW/TextFile/get_compare.R')
-
+source('~/Desktop/Research/Septi/GSE98455_RAW/TextFile/get_discrete_data.R')
 library(DESeq2)
 library(plotly)
 library(dplyr)
-
+library(arules)
 Count_df = read.table("Counts.csv",sep=",",check.names = TRUE) # Read the csv file
 
 row.names(Count_df) <- Count_df$V1 # Extract the gene names
@@ -67,8 +67,12 @@ data_control<-t(data_control)
 colnames(data_control)<- MSU_Names
 colnames(data_treatment)<-MSU_Names
 
-data_treatment_disc <-get_discrete(data_treatment)
-data_control_disc <- get_discrete(data_control)
+#data_treatment_disc <-get_discrete(data_treatment)
+#data_control_disc <- get_discrete(data_control)
+meth="cluster"
+data_treatment_disc<- get_discrete_data(data_treatment,meth)
+data_control_disc <- get_discrete_data(data_control,meth)
+
 
 Activ_Inhib_Mat_Tr <- matrix(nrow=14,ncol=4)
 colnames(Activ_Inhib_Mat_Tr)<-c("Inhibit","Dormant","Active","total")
