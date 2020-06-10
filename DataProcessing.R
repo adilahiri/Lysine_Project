@@ -1,7 +1,4 @@
 setwd("~/Desktop/Research/Septi/Lysine_Project")
-source('~/Desktop/Research/Septi/Lysine_Project/get_quartile.R')
-source('~/Desktop/Research/Septi/Lysine_Project/get_discrete.R')
-source('~/Desktop/Research/Septi/Lysine_Project/get_compare.R')
 source('~/Desktop/Research/Septi/Lysine_Project/get_discrete_data.R')
 library(DESeq2)
 library(plotly)
