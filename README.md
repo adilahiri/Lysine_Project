@@ -7,7 +7,7 @@ Study of Lysine biosynthesis pathway under saline stress and normal conditions.
 3. Get data for rice seedling under saline stress. (Status=Completed by Aditya).
 4. Data Extraction. (Status=Completed by Aditya, thanks to Prof. Zhang for providing the annotation file)
 5. Data Normalization. (Status=Completed by Aditya)
-6. Data Discretization. (Status=Completed by Aditya, Used K- Means Clustering)
+6. Data Discretization. (Status=Completed by Aditya, Used K- Means Cluster Discretization)
 7. Learn Network Parameter. (Status=Pending - Aditya,Dirichlet- Multinomial Model)
 8. Inference simulations. (Status=Pending-Aditya, to determine regulators of Lysine)
 9. Validation if any (Status=Pending, By Khushboo and  Prof. Septi)
