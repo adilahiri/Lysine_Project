@@ -28,25 +28,30 @@ sizeFactors(dds)
 normalized_counts <- counts(dds, normalized=TRUE) # Normalized Counts
 
 
-Illumina_Names<- c("13101.t06254","13103.t05563","13107.t01862",
-                   "13108.t02313","13109.t01024","13103.t04797",
-                   "13104.t01554","13104.t04365","13102.t02109",
-                   "13103.t01222","13103.t00810","13103.t01671",
-                   "13112.t03489","13102.t02141")
+Illumina_Names<- c("13101.t06254","13103.t05563","13107.t01862","13108.t02313","13109.t01024",
+                   "13103.t04797",
+                   "13104.t01554","13104.t04365",
+                   "13102.t02109","13103.t01222",
+                   "13103.t00810","13103.t01671",
+                   "13112.t03489",
+                   "13102.t02141")
 
-MSU_Names <- c("LOC_Os01g70300","LOC_Os03g63330",	"LOC_Os07g20544",	
-  "LOC_Os08g25390",	"LOC_Os09g12290","LOC_Os03g55280",
-  "LOC_Os04g18200",	"LOC_Os04g48540",	"LOC_Os02g24020",	
-  "LOC_Os03g14120",	"LOC_Os03g09910",	"LOC_Os03g18810",	
-  "LOC_Os12g37960",	"LOC_Os02g24354")
+MSU_Names <- c("LOC_Os01g70300","LOC_Os03g63330",	"LOC_Os07g20544","LOC_Os08g25390","LOC_Os09g12290",
+               "LOC_Os03g55280",
+               "LOC_Os04g18200","LOC_Os04g48540",
+               "LOC_Os02g24020","LOC_Os03g14120",
+               "LOC_Os03g09910","LOC_Os03g18810",
+               "LOC_Os12g37960",
+               "LOC_Os02g24354")
 
 Index_List_Illumina<-as.array(numeric())
 for(iter in 1:length(Illumina_Names)){
   Index_List_Illumina[iter] <- match(Illumina_Names[iter],Gene_Name)
 }
 
-PGM_Data <- matrix(nrow=14,ncol=368)
-for (iter in 1:14){
+Num_Genes = length(MSU_Names)
+PGM_Data <- matrix(nrow=Num_Genes,ncol=368)
+for (iter in 1:Num_Genes){
   PGM_Data[iter,] <- normalized_counts[Index_List_Illumina[iter],]
 }
 rownames(PGM_Data) <-Gene_Name[Index_List_Illumina]
@@ -63,20 +68,18 @@ data_control<-t(data_control)
 colnames(data_control)<- MSU_Names
 colnames(data_treatment)<-MSU_Names
 
-#data_treatment_disc <-get_discrete(data_treatment)
-#data_control_disc <- get_discrete(data_control)
 meth="cluster"
 data_treatment_disc<- get_discrete_data(data_treatment,meth)
 data_control_disc <- get_discrete_data(data_control,meth)
 
-
-Activ_Inhib_Mat_Tr <- matrix(nrow=14,ncol=4)
+### Matrix for Plot P1 and P2
+Activ_Inhib_Mat_Tr <- matrix(nrow=Num_Genes,ncol=4)
 colnames(Activ_Inhib_Mat_Tr)<-c("Inhibit","Dormant","Active","total")
 
-Activ_Inhib_Mat_Cn <- matrix(nrow=14,ncol=4)
+Activ_Inhib_Mat_Cn <- matrix(nrow=Num_Genes,ncol=4)
 colnames(Activ_Inhib_Mat_Cn)<-c("Inhibit","Dormant","Active","total")
 
-for (iter in 1:14){
+for (iter in 1:Num_Genes){
   Activ_Inhib_Mat_Tr [iter,1] <- table(data_treatment_disc[,iter])[1]
   Activ_Inhib_Mat_Tr [iter,2] <- table(data_treatment_disc[,iter])[2]
   Activ_Inhib_Mat_Tr [iter,3] <- table(data_treatment_disc[,iter])[3]
@@ -93,13 +96,14 @@ for (iter in 1:14){
   
 }
 
+
+
+
 ##### Plots ########
+Activ_Inhib_Mat_Tr<- data.frame(Activ_Inhib_Mat_Tr)
+Activ_Inhib_Mat_Cn<- data.frame(Activ_Inhib_Mat_Cn)
 
-
-Activ_Inhib_Mat_Tr<-as.data.frame(Activ_Inhib_Mat_Tr)
 Activ_Inhib_Mat_Tr$GeneNames<-MSU_Names
-
-Activ_Inhib_Mat_Cn<-as.data.frame(Activ_Inhib_Mat_Cn)
 Activ_Inhib_Mat_Cn$GeneNames<-MSU_Names
 
 p1<-plot_ly(Activ_Inhib_Mat_Tr,x=~GeneNames,y=~Inhibit,type='bar',
