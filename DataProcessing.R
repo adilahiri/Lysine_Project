@@ -1,11 +1,12 @@
 setwd("~/Desktop/Research/Septi/Lysine_Project")
 source('~/Desktop/Research/Septi/Lysine_Project/get_discrete_data.R')
+source('~/Desktop/Research/Septi/Lysine_Project/get_dirichlet.R')
 library(DESeq2)
 library(plotly)
 library(dplyr)
 library(arules)
-Count_df = read.table("Counts.csv",sep=",",check.names = TRUE) # Read the csv file
 
+Count_df = read.table("Counts.csv",sep=",",check.names = TRUE) # Read the csv file
 row.names(Count_df) <- Count_df$V1 # Extract the gene names
 Gene_Name <-Count_df[,1, drop=FALSE]
 Gene_Name<-t(Gene_Name)
@@ -43,6 +44,7 @@ MSU_Names <- c("LOC_Os01g70300","LOC_Os03g63330",	"LOC_Os07g20544","LOC_Os08g253
                "LOC_Os03g09910","LOC_Os03g18810",
                "LOC_Os12g37960",
                "LOC_Os02g24354")
+Topological_Names <- LETTERS[1:14] # A-N Names
 
 Index_List_Illumina<-as.array(numeric())
 for(iter in 1:length(Illumina_Names)){
@@ -91,11 +93,15 @@ for (iter in 1:Num_Genes){
   Activ_Inhib_Mat_Cn [iter,3] <- table(data_control_disc[,iter])[3]
   Activ_Inhib_Mat_Cn [iter,4] <- table(data_control_disc[,iter])[1]+
     table(data_control_disc[,iter])[2] +table(data_control_disc[,iter])[3]
-  
-  
-  
 }
 
+### Parameter Estimation Section ####
+data_control_disc_topo <- data_control_disc
+data_treatment_disc_topo <- data_treatment_disc
+colnames(data_treatment_disc_topo)<-Topological_Names
+colnames(data_control_disc_topo) <- Topological_Names
+dircihlet_params_treatment<- get_dirichlet(data_treatment_disc_topo)
+dirichlet_params_control <- get_dirichlet(data_control_disc_topo)
 
 
 
