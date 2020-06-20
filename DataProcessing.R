@@ -1,6 +1,7 @@
 setwd("~/Desktop/Research/Septi/Lysine_Project")
 source('~/Desktop/Research/Septi/Lysine_Project/get_discrete_data.R')
 source('~/Desktop/Research/Septi/Lysine_Project/get_dirichlet.R')
+source('~/Desktop/Research/Septi/Lysine_Project/get_param.R')
 library(DESeq2)
 library(plotly)
 library(dplyr)
@@ -100,7 +101,7 @@ data_control_disc_topo <- data_control_disc
 data_treatment_disc_topo <- data_treatment_disc
 colnames(data_treatment_disc_topo)<-Topological_Names
 colnames(data_control_disc_topo) <- Topological_Names
-dircihlet_params_treatment<- get_dirichlet(data_treatment_disc_topo)
+dirichlet_params_treatment<- get_dirichlet(data_treatment_disc_topo)
 dirichlet_params_control <- get_dirichlet(data_control_disc_topo)
 
 
