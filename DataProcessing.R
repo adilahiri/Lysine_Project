@@ -2,6 +2,8 @@ setwd("~/Desktop/Research/Septi/Lysine_Project")
 source('~/Desktop/Research/Septi/Lysine_Project/get_discrete_data.R')
 source('~/Desktop/Research/Septi/Lysine_Project/get_dirichlet.R')
 source('~/Desktop/Research/Septi/Lysine_Project/get_param.R')
+source('~/Desktop/Research/Septi/Lysine_Project/get_expected.R')
+
 library(DESeq2)
 library(plotly)
 library(dplyr)
@@ -104,6 +106,138 @@ colnames(data_control_disc_topo) <- Topological_Names
 dirichlet_params_treatment<- get_dirichlet(data_treatment_disc_topo)
 dirichlet_params_control <- get_dirichlet(data_control_disc_topo)
 
+expected_val_treatment <- get_expected(dirichlet_params_treatment)
+expected_val_control <- get_expected(dirichlet_params_control)
+
+row.names(expected_val_treatment)<-NULL
+row.names(expected_val_control)<-NULL
+
+# Create the CPT Tables
+status <- c("inhi","dorm", "act")
+
+# Node A
+Treatment_CPT_A <- matrix(c(expected_val_treatment[1,1], expected_val_treatment[1,2],
+                            expected_val_treatment[1,3]), 
+                          ncol=3, dimnames=list(NULL, status))
+Control_CPT_A <- matrix(c(expected_val_control[1,1], expected_val_control[1,2],
+                          expected_val_control[1,3]), 
+                          ncol=3, dimnames=list(NULL, status))
+# Node B
+Treatment_CPT_B <- matrix(c(expected_val_treatment[2,1], expected_val_treatment[2,2],
+                            expected_val_treatment[2,3]), 
+                          ncol=3, dimnames=list(NULL, status))
+Control_CPT_B <- matrix(c(expected_val_control[2,1], expected_val_control[2,2],
+                          expected_val_control[2,3]), 
+                        ncol=3, dimnames=list(NULL, status))
+# Node C
+Treatment_CPT_C <- matrix(c(expected_val_treatment[3,1], expected_val_treatment[3,2],
+                            expected_val_treatment[3,3]), 
+                          ncol=3, dimnames=list(NULL, status))
+Control_CPT_C <- matrix(c(expected_val_control[3,1], expected_val_control[3,2],
+                          expected_val_control[3,3]), 
+                        ncol=3, dimnames=list(NULL, status))
+
+# Node D
+Treatment_CPT_D <- matrix(c(expected_val_treatment[4,1], expected_val_treatment[4,2],
+                            expected_val_treatment[4,3]), 
+                          ncol=3, dimnames=list(NULL, status))
+Control_CPT_D <- matrix(c(expected_val_control[4,1], expected_val_control[4,2],
+                          expected_val_control[4,3]), 
+                        ncol=3, dimnames=list(NULL, status))
+
+
+# Node E
+Treatment_CPT_E <- matrix(c(expected_val_treatment[5,1], expected_val_treatment[5,2],
+                            expected_val_treatment[5,3]), 
+                          ncol=3, dimnames=list(NULL, status))
+Control_CPT_E <- matrix(c(expected_val_control[5,1], expected_val_control[5,2],
+                          expected_val_control[5,3]), 
+                        ncol=3, dimnames=list(NULL, status))
+
+# Node F
+Treatment_CPT_F<-c(t(expected_val_treatment[6:248,1:3]))
+dim(Treatment_CPT_F)<-c(3,3,3,3,3,3)
+dimnames(Treatment_CPT_F)=list("F"=status,"A"=status,"B"=status,"C"=status,"D"=status,"E"=status)
+
+Control_CPT_F<-c(t(expected_val_control[6:248,1:3]))
+dim(Control_CPT_F)<-c(3,3,3,3,3,3)
+dimnames(Control_CPT_F)=list("F"=status,"A"=status,"B"=status,"C"=status,"D"=status,"E"=status)
+
+# Node G
+Treatment_CPT_G<-c(t(expected_val_treatment[249:275,1:3]))
+dim(Treatment_CPT_G)<-c(3,3,3,3)
+dimnames(Treatment_CPT_G)=list("G"=status,"D"=status,"E"=status,"F"=status)
+
+Control_CPT_G<-c(t(expected_val_control[249:275,1:3]))
+dim(Control_CPT_G)<-c(3,3,3,3)
+dimnames(Control_CPT_G)=list("G"=status,"D"=status,"E"=status,"F"=status)
+
+
+# Node H
+Treatment_CPT_H<-c(t(expected_val_treatment[276:302,1:3]))
+dim(Treatment_CPT_H)<-c(3,3,3,3)
+dimnames(Treatment_CPT_H)=list("H"=status,"D"=status,"E"=status,"F"=status)
+
+Control_CPT_H<-c(t(expected_val_control[276:302,1:3]))
+dim(Control_CPT_H)<-c(3,3,3,3)
+dimnames(Control_CPT_H)=list("H"=status,"D"=status,"E"=status,"F"=status)
+
+
+# Node I
+Treatment_CPT_I<-c(t(expected_val_treatment[303:311,1:3]))
+dim(Treatment_CPT_I)<-c(3,3,3)
+dimnames(Treatment_CPT_I)=list("I"=status,"G"=status,"H"=status)
+
+Control_CPT_I<-c(t(expected_val_control[303:311,1:3]))
+dim(Control_CPT_I)<-c(3,3,3)
+dimnames(Control_CPT_I)=list("I"=status,"G"=status,"H"=status)
+
+
+# Node J
+Treatment_CPT_J<-c(t(expected_val_treatment[312:320,1:3]))
+dim(Treatment_CPT_J)<-c(3,3,3)
+dimnames(Treatment_CPT_J)=list("J"=status,"G"=status,"H"=status)
+
+Control_CPT_J<-c(t(expected_val_control[312:320,1:3]))
+dim(Control_CPT_J)<-c(3,3,3)
+dimnames(Control_CPT_J)=list("J"=status,"G"=status,"H"=status)
+
+# Node K
+Treatment_CPT_K<-c(t(expected_val_treatment[321:329,1:3]))
+dim(Treatment_CPT_K)<-c(3,3,3)
+dimnames(Treatment_CPT_K)=list("K"=status,"I"=status,"J"=status)
+
+Control_CPT_K<-c(t(expected_val_control[321:329,1:3]))
+dim(Control_CPT_K)<-c(3,3,3)
+dimnames(Control_CPT_K)=list("K"=status,"I"=status,"J"=status)
+
+#Node L
+Treatment_CPT_L<-c(t(expected_val_treatment[330:338,1:3]))
+dim(Treatment_CPT_L)<-c(3,3,3)
+dimnames(Treatment_CPT_L)=list("L"=status,"I"=status,"J"=status)
+
+Control_CPT_L<-c(t(expected_val_control[330:338,1:3]))
+dim(Control_CPT_L)<-c(3,3,3)
+dimnames(Control_CPT_L)=list("L"=status,"I"=status,"J"=status)
+
+# Node M
+Treatment_CPT_M<-c(t(expected_val_treatment[339:347,1:3]))
+dim(Treatment_CPT_M)<-c(3,3,3)
+dimnames(Treatment_CPT_M)=list("M"=status,"K"=status,"L"=status)
+
+Control_CPT_M<-c(t(expected_val_control[339:347,1:3]))
+dim(Control_CPT_M)<-c(3,3,3)
+dimnames(Control_CPT_M)=list("M"=status,"K"=status,"L"=status)
+
+
+# Node N
+Treatment_CPT_N<-c(t(expected_val_treatment[348:350,1:3]))
+dim(Treatment_CPT_N)<-c(3,3)
+dimnames(Treatment_CPT_N)=list("N"=status,"M"=status)
+
+Control_CPT_N<-c(t(expected_val_control[348:350,1:3]))
+dim(Control_CPT_N)<-c(3,3)
+dimnames(Control_CPT_N)=list("N"=status,"M"=status)
 
 
 ##### Plots ########
