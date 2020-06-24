@@ -3,12 +3,13 @@ source('~/Desktop/Research/Septi/Lysine_Project/get_discrete_data.R')
 source('~/Desktop/Research/Septi/Lysine_Project/get_dirichlet.R')
 source('~/Desktop/Research/Septi/Lysine_Project/get_param.R')
 source('~/Desktop/Research/Septi/Lysine_Project/get_expected.R')
+source('~/Desktop/Research/Septi/Lysine_Project/get_nlargest.R')
 
 library(DESeq2)
 library(plotly)
 library(dplyr)
 library(arules)
-
+library(bnlearn)
 
 Count_df = read.table("Counts.csv",sep=",",check.names = TRUE) # Read the csv file
 row.names(Count_df) <- Count_df$V1 # Extract the gene names
@@ -74,7 +75,9 @@ data_control<-t(data_control)
 colnames(data_control)<- MSU_Names
 colnames(data_treatment)<-MSU_Names
 
-meth="cluster"
+#detach("package:bnlearn", unload=TRUE) # as bnlearn has function with same name 
+
+meth="cluster" ## interval or cluster
 data_treatment_disc<- get_discrete_data(data_treatment,meth)
 data_control_disc <- get_discrete_data(data_control,meth)
 
@@ -243,7 +246,7 @@ dimnames(Control_CPT_N)=list("N"=status,"M"=status)
 
 
 ######### Define and plot the graph structure (DAG)
-library(bnlearn)
+#library(bnlearn)
 network_model<-model2network("[A][B][C][D][E][F|A:B:C:D:E][G|D:E:F][H|D:E:F][I|G:H][J|G:H][K|I:J][L|I:J][M|K:L][N|M]")
 
 
@@ -792,13 +795,13 @@ p5 <- plot_ly(Treatment_Top_Five, x = ~X_Names, y = ~values,
               marker=list(color=c('#2ca02c','#ff7f0e','#1f77b4','#d62728','#9467bd')), 
               name='Saline Treatment Two Point Intervention Top Five',
               text=round(Treatment_Top_Five$values,4), textposition='auto',type = 'bar') %>% 
-  layout(xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.7)))
+  layout(title="Treatment Two Point Intervention Top Five",xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.7)))
 show(p5)
 
 p6 <- plot_ly(Control_Top_Five, x = ~X_Names, y = ~values,
               marker=list(color=c('#2ca02c','#ff7f0e','#1f77b4','#d62728','#9467bd')), 
               name='Control Two Point Intervention Top Five',
-              text=round(Treatment_Top_Five$values,4), textposition='auto',type = 'bar') %>% 
-  layout(xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.6)))
+              text=round(Control_Top_Five$values,4), textposition='auto',type = 'bar') %>% 
+  layout(title="Control Two Point Intervention Top Five",xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.6)))
 show(p6)
 
