@@ -592,6 +592,117 @@ Control_Matrix_Dormant[13,1]=cpquery(dfit_control,
 Control_Matrix_Active[13,1]=cpquery(dfit_control,
                                       (N==status[iter_N]),
                                       list(M="act"),method='lw',n=k)
+####################### TWO COMBINATIONS ##########################################################
+Intercombo <-combn(Interevention_List, 2)
+
+Treament_Combo <- matrix (nrow=length(Intercombo)/2,ncol=3^2)
+Control_Combo <- matrix (nrow=length(Intercombo)/2,ncol=3^2)
+
+names_row<-NULL
+
+
+for (iter in 1:78){
+  names_row[iter]= paste(Intercombo[1,iter],"+",Intercombo[2,iter])
+ }
+
+rownames(Treament_Combo)<-names_row
+rownames(Control_Combo) <- names_row
+
+col_assign <- expand.grid(c(-1,0,1),c(-1,0,1))
+
+names_col <- c("-1-1","0-1","1-1","-10", "00","10","-11","01","11")
+
+colnames(Treament_Combo)<-names_col
+colnames(Control_Combo)<-names_col
+
+for (iter in 1: 78){
+  set.seed(4)
+  
+  Treament_Combo[iter,1] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
+                                   & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
+  
+  Treament_Combo[iter,2] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
+                                   & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
+  
+  Treament_Combo[iter,3] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
+                                   & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
+  
+  Treament_Combo[iter,4] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
+                                   & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
+  
+  Treament_Combo[iter,5] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
+                                   & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
+  
+  Treament_Combo[iter,6] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
+                                   & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
+  
+  Treament_Combo[iter,7] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
+                                   & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
+  
+  Treament_Combo[iter,8] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
+                                   & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
+  
+  Treament_Combo[iter,9] <-cpquery(dfit_treatment, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
+                                   & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
+  
+  
+  
+  Control_Combo[iter,1] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
+                                   & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
+  
+  Control_Combo[iter,2] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
+                                   & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
+  
+  Control_Combo[iter,3] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
+                                   & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
+  
+  Control_Combo[iter,4] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
+                                   & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
+  
+  Control_Combo[iter,5] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
+                                   & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
+  
+  Control_Combo[iter,6] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
+                                   & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
+  
+  Control_Combo[iter,7] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
+                                   & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
+  
+  Control_Combo[iter,8] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
+                                   & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
+  
+  Control_Combo[iter,9] <-cpquery(dfit_control, (N=="act"),
+                                   evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
+                                   & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
+
+}
+
+Treatment_Top_Five <- get_nlargest(Treament_Combo,n=5)
+Y_Treatment <- Treatment_Top_Five$values
+X_Treatment <- names_col[Treatment_Top_Five$V2]
+Treatment_Top_Five$X_Names<- paste(Treatment_Top_Five$Names,X_Treatment)
+
+Control_Top_Five <- get_nlargest(Control_Combo,n=5)
+Y_Control <- Control_Top_Five$values
+X_Control <- names_col[Control_Top_Five$V2]
+Control_Top_Five$X_Names<- paste(Control_Top_Five$Names,X_Control)
 
 
 # Plot the results
@@ -676,4 +787,18 @@ p4 <- p4 %>% layout(title = "Saline Treatment LYSA activation probabilities ",
                     yaxis = list(title = "Probability of Activation of N",range=c(0,0.6)))
 
 show(p4)
+
+p5 <- plot_ly(Treatment_Top_Five, x = ~X_Names, y = ~values,
+              marker=list(color=c('#2ca02c','#ff7f0e','#1f77b4','#d62728','#9467bd')), 
+              name='Saline Treatment Two Point Intervention Top Five',
+              text=round(Treatment_Top_Five$values,4), textposition='auto',type = 'bar') %>% 
+  layout(xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.7)))
+show(p5)
+
+p6 <- plot_ly(Control_Top_Five, x = ~X_Names, y = ~values,
+              marker=list(color=c('#2ca02c','#ff7f0e','#1f77b4','#d62728','#9467bd')), 
+              name='Control Two Point Intervention Top Five',
+              text=round(Treatment_Top_Five$values,4), textposition='auto',type = 'bar') %>% 
+  layout(xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.6)))
+show(p6)
 
