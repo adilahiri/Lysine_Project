@@ -598,7 +598,7 @@ Control_Matrix_Active[13,1]=cpquery(dfit_control,
 ####################### TWO COMBINATIONS ##########################################################
 Intercombo <-combn(Interevention_List, 2)
 
-Treament_Combo <- matrix (nrow=length(Intercombo)/2,ncol=3^2)
+Treatment_Combo <- matrix (nrow=length(Intercombo)/2,ncol=3^2)
 Control_Combo <- matrix (nrow=length(Intercombo)/2,ncol=3^2)
 
 names_row<-NULL
@@ -608,52 +608,52 @@ for (iter in 1:78){
   names_row[iter]= paste(Intercombo[1,iter],"+",Intercombo[2,iter])
  }
 
-rownames(Treament_Combo)<-names_row
+rownames(Treatment_Combo)<-names_row
 rownames(Control_Combo) <- names_row
 
 col_assign <- expand.grid(c(-1,0,1),c(-1,0,1))
 
 names_col <- c("-1-1","0-1","1-1","-10", "00","10","-11","01","11")
 
-colnames(Treament_Combo)<-names_col
+colnames(Treatment_Combo)<-names_col
 colnames(Control_Combo)<-names_col
 
 for (iter in 1: 78){
   set.seed(4)
   
-  Treament_Combo[iter,1] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,1] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
                                    & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
   
-  Treament_Combo[iter,2] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,2] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
                                    & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
   
-  Treament_Combo[iter,3] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,3] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
                                    & eval(parse(text=Intercombo[2,iter]))=="inhi",n=k)
   
-  Treament_Combo[iter,4] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,4] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
                                    & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
   
-  Treament_Combo[iter,5] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,5] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
                                    & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
   
-  Treament_Combo[iter,6] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,6] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
                                    & eval(parse(text=Intercombo[2,iter]))=="dorm",n=k)
   
-  Treament_Combo[iter,7] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,7] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="inhi")
                                    & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
   
-  Treament_Combo[iter,8] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,8] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="dorm")
                                    & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
   
-  Treament_Combo[iter,9] <-cpquery(dfit_treatment, (N=="act"),
+  Treatment_Combo[iter,9] <-cpquery(dfit_treatment, (N=="act"),
                                    evidence = c(eval(parse(text=Intercombo[1,iter]))=="act")
                                    & eval(parse(text=Intercombo[2,iter]))=="act",n=k)
   
@@ -697,7 +697,7 @@ for (iter in 1: 78){
 
 }
 
-Treatment_Top_Five <- get_nlargest(Treament_Combo,n=5)
+Treatment_Top_Five <- get_nlargest(Treatment_Combo,n=5)
 Y_Treatment <- Treatment_Top_Five$values
 X_Treatment <- names_col[Treatment_Top_Five$V2]
 Treatment_Top_Five$X_Names<- paste(Treatment_Top_Five$Names,X_Treatment)
@@ -766,21 +766,21 @@ p3 <- p3 %>% add_trace(x = ~Names, y = ~activation, type = 'bar',name="activatio
 p3 <- p3 %>% layout(title = "Control LYSA activation probabilities ",
                       barmode = 'group',
                       xaxis = list(title = "Gene Names"),
-                      yaxis = list(title = "Probability of Activation of N",range(0,0.6)))
+                      yaxis = list(title = "Probability of Activation of N",range(0,0.7)))
 
 show(p3)
 
 p4 <- Treatment_Results %>% plot_ly()
 p4 <- p4 %>% add_trace(x = ~Names, y = ~inhibition, type = 'bar',name="inhibition",
-                       text = Control_Results$inhibition, textposition = 'auto',
+                       text = Treatment_Results$inhibition, textposition = 'auto',
                        marker = list(color = '#1f77b4',
                                      line = list(color = '#1f77b4', width = 1.5)))
 p4 <- p4 %>% add_trace(x = ~Names, y = ~dormancy, type = 'bar',name="dormancy",
-                       text = Control_Results$dormancy, textposition = 'auto',
+                       text = Treatment_Results$dormancy, textposition = 'auto',
                        marker = list(color = '#ff7f0e',
                                      line = list(color = '#ff7f0e', width = 1.5)))
 p4 <- p4 %>% add_trace(x = ~Names, y = ~activation, type = 'bar',name="activation",
-                       text = Control_Results$activation, textposition = 'auto',
+                       text = Treatment_Results$activation, textposition = 'auto',
                        marker = list(color = '#2ca02c',
                                      line = list(color = '#2ca02c', width = 1.5)))
 
@@ -795,7 +795,7 @@ p5 <- plot_ly(Treatment_Top_Five, x = ~X_Names, y = ~values,
               marker=list(color=c('#2ca02c','#ff7f0e','#1f77b4','#d62728','#9467bd')), 
               name='Saline Treatment Two Point Intervention Top Five',
               text=round(Treatment_Top_Five$values,4), textposition='auto',type = 'bar') %>% 
-  layout(title="Treatment Two Point Intervention Top Five",xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.7)))
+  layout(title="Saline Treatment Two Point Intervention Top Five",xaxis=list(title='Genes'),yaxis = list(title = 'Probabilitly ',range=c(0,0.7)))
 show(p5)
 
 p6 <- plot_ly(Control_Top_Five, x = ~X_Names, y = ~values,
