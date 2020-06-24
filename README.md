@@ -9,6 +9,6 @@ Study of Lysine biosynthesis pathway under saline stress and normal conditions.
 5. Data Normalization. (Status=Completed by Aditya)
 6. Data Discretization. (Status=Completed by Aditya, Used K- Means Cluster Discretization)
 7. Learn Network Parameter. (Status=Completed by Aditya, Used Dirichlet- Multinomial Model)
-8. Inference simulations. (Status=Pending-Aditya, to determine regulators of Lysine)
+8. Inference simulations. (Status=Completed by-Aditya, to determine regulators of Lysine)
 9. Validation if any (Status=Pending, By Khushboo and  Prof. Septi)
 10. Soft Validation /Other Preliminary Analysis (Status=Pending, Differential Expression Analysis, by Rajan)
